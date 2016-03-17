@@ -6,6 +6,7 @@ public class LadderClimberC : MonoBehaviour {
 	private Transform selfTransform;
     public float speed = 1;
 	public bool disableGravityUponEnter = true;
+	public float rotationSpeed = .8f;
 	public HashSet<GameObject> salmonSet = new HashSet<GameObject> ();
 
     public void Start() {
@@ -30,17 +31,28 @@ public class LadderClimberC : MonoBehaviour {
 		}
     }
 
+	private void rotateObjectIntoCurrent(GameObject obj) {
+		if (obj.transform.forward == selfTransform.forward) {
+			return;
+		}
+		obj.transform.forward = obj.transform.forward + ((selfTransform.forward-obj.transform.forward) * Time.deltaTime*rotationSpeed);
+
+	}
+
     public void Update() {
 		Debug.Log ("Self is " + selfTransform);
-		Vector3 direction = new Vector3( selfTransform.rotation.x,selfTransform.rotation.y,selfTransform.rotation.z);
+		Vector3 direction = selfTransform.forward;
 		//Ok, we have direction, lets normalize it! Calc 3 stuff!
 		//Oh wait, unity has this built in.
 		direction.Normalize();
 		Vector3 movementVector = direction * Time.deltaTime * speed;
 		foreach ( GameObject obj in salmonSet ) {
 			//obj.transform.
+			rotateObjectIntoCurrent(obj);
 			//Move it forward here
-			obj.transform.Translate(movementVector);
+			obj.transform.Translate(movementVector,Space.World);
+			Debug.Log (selfTransform.forward + "    " + obj.transform.forward);
+
 
 		}
     }
