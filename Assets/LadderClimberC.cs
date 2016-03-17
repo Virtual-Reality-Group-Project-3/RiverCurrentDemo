@@ -7,6 +7,7 @@ public class LadderClimberC : MonoBehaviour {
     public float speed = 1;
 	public bool disableGravityUponEnter = true;
 	public float rotationSpeed = .8f;
+	//Above two vars control how fast the fish bobs arounds in water in this stream;
 	public HashSet<GameObject> salmonSet = new HashSet<GameObject> ();
 
     public void Start() {
@@ -46,6 +47,7 @@ public class LadderClimberC : MonoBehaviour {
 		//Oh wait, unity has this built in.
 		direction.Normalize();
 		Vector3 movementVector = direction * Time.deltaTime * speed;
+
 		foreach ( GameObject obj in salmonSet ) {
 			//obj.transform.
 			rotateObjectIntoCurrent(obj);
